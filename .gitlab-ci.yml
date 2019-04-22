@@ -19,7 +19,7 @@ deploy_production:
   stage: deploy
   script:
     - npm install -g serverless
-    - sls client deploy
+    - sls client deploy --no-confirm
   environment:
     name: prod
   only:
