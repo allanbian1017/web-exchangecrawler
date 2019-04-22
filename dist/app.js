@@ -43,9 +43,9 @@ let lineChart = new Chart(document.getElementById('line-chart'), {
   options: {
     maintainAspectRatio: false,
     legend: {
-      onClick: function(evt, item) {
+      onClick: (evt, item) => {
         let ci = this.chart;
-        ci.data.datasets.forEach(function(x) {
+        ci.data.datasets.forEach((x) => {
           if (x.label === item.text) {
             x.hidden = false;
           } else {
@@ -80,76 +80,66 @@ function addData(chart, data, type) {
   chart.update();
 }
 
+let endpoint = 'https://api.allanbian.me/currency/history/';
 function fetchMultipleHistory(dates) {
   Promise.all(
-    dates.map(function(x) {
-      let url =
-        'https://lw4ccxp0og.execute-api.us-east-1.amazonaws.com/dev/history/' +
-        x;
-      return fetch(url, {method: 'GET'}).then(function(response) {
-        return response.json();
-      });
-    })
+    dates.map((date) =>
+      fetch(endpoint + date, {method: 'GET'}).then((response) =>
+        response.json()
+      )
+    )
   )
-    .then(function(data) {
+    .then((data) => {
       cleanData(lineChart);
       let hist = data
-        .filter(function(x) {
-          return x.History.length != 0;
-        })
-        .map(function(x) {
-          return x.History[x.History.length - 1];
-        });
+        .filter((x) => x.History.length != 0)
+        .map((x) => x.History[x.History.length - 1]);
 
-      hist.forEach(function(x) {
+      hist.forEach((x) => {
         let date = moment(x.date)
           .tz('Asia/Taipei')
           .format('MM-DD');
         addLabel(lineChart, date);
 
-        ['JPY', 'USD', 'CNY', 'KRW', 'EUR'].forEach(function(type) {
+        ['JPY', 'USD', 'CNY', 'KRW', 'EUR'].forEach((type) => {
           addData(lineChart, x[type], type);
         });
       });
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.log(err);
     });
 }
 
 function fetchHistory(date) {
-  let url =
-    'https://lw4ccxp0og.execute-api.us-east-1.amazonaws.com/dev/history/' +
-    date;
+  let url = endpoint + date;
   fetch(url, {method: 'GET'})
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(response) {
+    .then((response) => response.json())
+    .then((response) => {
       cleanData(lineChart);
-      response.History.forEach(function(x) {
+      response.History.forEach((x) => {
         let date = moment(x.date)
           .tz('Asia/Taipei')
           .format('HH:mm');
         addLabel(lineChart, date);
 
-        ['JPY', 'USD', 'CNY', 'KRW', 'EUR'].forEach(function(type) {
+        ['JPY', 'USD', 'CNY', 'KRW', 'EUR'].forEach((type) => {
           addData(lineChart, x[type], type);
         });
       });
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.log(err);
     });
 }
 
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', (event) => {
   if (window.location.pathname === '/hours') {
     let datePicker = new Pikaday({
       field: document.getElementById('date-picker'),
       minDate: new Date(2017, 8, 21),
       maxDate: new Date(),
-      onSelect: function(date) {
+      onSelect: (date) => {
         fetchHistory(moment(date).format('YYYYMMDD'));
       },
     });
@@ -160,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       field: document.getElementById('date-picker'),
       minDate: new Date(2017, 8, 21),
       maxDate: new Date(),
-      onSelect: function(date) {
+      onSelect: (date) => {
         let from = moment(date);
         let now = moment();
 
