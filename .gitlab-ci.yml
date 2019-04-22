@@ -1,0 +1,26 @@
+image: node:8.10
+
+stages:
+  - build
+  - deploy
+
+cache:
+  key: "$CI_PROJECT_ID"
+  untracked: true
+  paths:
+    - node_modules
+
+run_build:
+  stage: build
+  script:
+    - npm install
+
+deploy_production:
+  stage: deploy
+  script:
+    - npm install -g serverless
+    - sls client deploy
+  environment:
+    name: prod
+  only:
+    - master
