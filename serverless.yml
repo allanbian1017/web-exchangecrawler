@@ -1,0 +1,17 @@
+service: ExchangeWebsite
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: us-east-1
+
+plugins:
+  - serverless-finch
+
+custom:
+  client:
+    bucketName: exchange-website
+    distributionFolder: dist 
+    indexDocument: index.html
+    errorDocument: index.html
