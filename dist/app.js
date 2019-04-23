@@ -44,15 +44,14 @@ let lineChart = new Chart(document.getElementById('line-chart'), {
     maintainAspectRatio: false,
     legend: {
       onClick: (evt, item) => {
-        let ci = this.chart;
-        ci.data.datasets.forEach((x) => {
+        lineChart.data.datasets.forEach((x) => {
           if (x.label === item.text) {
             x.hidden = false;
           } else {
             x.hidden = true;
           }
         });
-        ci.update();
+        lineChart.update();
       },
       display: true,
     },
