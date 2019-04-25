@@ -14,11 +14,13 @@ run_build:
   stage: build
   script:
     - npm install
+    - npm run build
 
 deploy_production:
   stage: deploy
   script:
     - npm install -g serverless
+    - npm run build
     - sls client deploy --no-confirm
   environment:
     name: prod

@@ -10,6 +10,18 @@ Install all dependency library:
 npm install
 ```
 
+Start a local dev enviroment:
+
+```bash
+npm run dev
+```
+
+Build for deployment:
+
+```bash
+npm run build
+```
+
 Deploy ExchangeWebsite to AWS:
 
 ```bash
