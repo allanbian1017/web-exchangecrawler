@@ -1,1 +1,1 @@
-export {default as CurrencyAPI} from './CurrencyAPI';
+export { default as CurrencyAPI } from './CurrencyAPI';

@@ -1,4 +1,4 @@
-let initialFilter = {
+const initialFilter = {
   JPY: true,
   USD: false,
   CNY: false,
@@ -7,16 +7,16 @@ let initialFilter = {
 };
 
 const currencyFilter = (state = initialFilter, action) => {
+  const filter = {
+    JPY: false,
+    USD: false,
+    CNY: false,
+    KRW: false,
+    EUR: false,
+  };
+
   switch (action.type) {
     case 'SET_CURRENCY_FILTER':
-      let filter = {
-        JPY: false,
-        USD: false,
-        CNY: false,
-        KRW: false,
-        EUR: false,
-      };
-
       filter[action.filter] = true;
       return filter;
     default:

@@ -1,10 +1,11 @@
 const path = require('path');
 
 module.exports = {
+  entry: ['./src/index.jsx'],
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js[x]?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -15,6 +16,10 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
     ],
+  },
+  resolve: {
+    modules: [path.resolve('./src'), path.resolve('./node_modules')],
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),

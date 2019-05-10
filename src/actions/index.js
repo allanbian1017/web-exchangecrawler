@@ -1,21 +1,19 @@
 import moment from 'moment-timezone';
-import {CurrencyAPI} from '../api';
+import { CurrencyAPI } from '../api';
 
-export const setCurrencyFilter = (filter) => {
-  return {
-    type: 'SET_CURRENCY_FILTER',
-    filter,
-  };
-};
+export const setCurrencyFilter = filter => ({
+  type: 'SET_CURRENCY_FILTER',
+  filter,
+});
 
 function getDatesFromDateToNow(date) {
-  let from = moment(date);
-  let now = moment();
+  const from = moment(date);
+  const now = moment();
 
-  let dates = [];
+  const dates = [];
   for (let m = from; m.isBefore(now); m.add(1, 'days')) {
-    let day = m.toDate().getDay();
-    let isWeekend = day == 6 || day == 0;
+    const day = m.toDate().getDay();
+    const isWeekend = day === 6 || day === 0;
     if (isWeekend === false) {
       dates.push(m.format('YYYYMMDD'));
     }
@@ -31,64 +29,52 @@ function changeDate(date) {
   };
 }
 
+export const receiveData = data => ({
+  type: 'RECEIVE_DATA',
+  data,
+});
+
 function fetchRangeHistory(dates) {
-  return (dispatch) => {
-    return Promise.all(
-      dates.map((date) => new CurrencyAPI().getHistoryDataByDate(date))
-    ).then((body) => {
-      let hist = body
-        .filter((x) => x.History.length != 0)
-        .map((x) => x.History[x.History.length - 1]);
+  const api = new CurrencyAPI();
+  return dispatch => Promise.all(dates.map(date => api.getHistoryDataByDate(date))).then((body) => {
+    const hist = body
+      .filter(x => x.History.length !== 0)
+      .map(x => x.History[x.History.length - 1]);
 
-      let data = {};
-      hist.forEach((x) => {
-        let date = moment(x.date)
-          .tz('Asia/Taipei')
-          .format('MM-DD');
-        data[date] = x;
-      });
-
-      return dispatch(receiveData(data));
+    const data = {};
+    hist.forEach((x) => {
+      const date = moment(x.date)
+        .tz('Asia/Taipei')
+        .format('MM-DD');
+      data[date] = x;
     });
-  };
+
+    return dispatch(receiveData(data));
+  });
 }
 
-export const selectStartDate = (date) => {
-  return (dispatch) => {
-    dispatch(changeDate(date));
-    let dates = getDatesFromDateToNow(date);
-    return dispatch(fetchRangeHistory(dates));
-  };
+export const selectStartDate = date => (dispatch) => {
+  dispatch(changeDate(date));
+  const dates = getDatesFromDateToNow(date);
+  return dispatch(fetchRangeHistory(dates));
 };
 
 function fetchDayHistory(date) {
-  return (dispatch) => {
-    return new CurrencyAPI()
-      .getHistoryDataByDate(moment(date).format('YYYYMMDD'))
-      .then((body) => {
-        let data = {};
-        body.History.forEach((x) => {
-          let date = moment(x.date)
-            .tz('Asia/Taipei')
-            .format('HH:mm');
-          data[date] = x;
-        });
+  const api = new CurrencyAPI();
+  return dispatch => api.getHistoryDataByDate(moment(date).format('YYYYMMDD')).then((body) => {
+    const data = {};
+    body.History.forEach((x) => {
+      const histDate = moment(x.date)
+        .tz('Asia/Taipei')
+        .format('HH:mm');
+      data[histDate] = x;
+    });
 
-        return dispatch(receiveData(data));
-      });
-  };
+    return dispatch(receiveData(data));
+  });
 }
 
-export const selectDate = (date) => {
-  return (dispatch) => {
-    dispatch(changeDate(date));
-    return dispatch(fetchDayHistory(date));
-  };
-};
-
-export const receiveData = (data) => {
-  return {
-    type: 'RECEIVE_DATA',
-    data,
-  };
+export const selectDate = date => (dispatch) => {
+  dispatch(changeDate(date));
+  return dispatch(fetchDayHistory(date));
 };

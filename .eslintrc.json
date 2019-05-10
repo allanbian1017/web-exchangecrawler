@@ -1,5 +1,5 @@
 {
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": "airbnb",
   "plugins": ["react"],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -10,6 +10,8 @@
   "rules": {
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
+    "react/forbid-prop-types": "off",
+    "import/prefer-default-export": "off",
     "no-console": "off"
   },
   "env": {

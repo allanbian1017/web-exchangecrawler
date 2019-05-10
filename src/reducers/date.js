@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 
-let initialDate = moment().toDate();
+const initialDate = moment().toDate();
 
 const date = (state = initialDate, action) => {
   switch (action.type) {

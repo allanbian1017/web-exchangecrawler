@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {Provider} from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
-import {HoursContainer, DayContainer} from './containers';
+import { HoursContainer, DayContainer } from './containers';
 
 const store = configureStore();
 
@@ -21,5 +21,5 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-  document.getElementById('app')
+  document.getElementById('app'),
 );
