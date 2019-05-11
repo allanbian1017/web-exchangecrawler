@@ -21,7 +21,7 @@ class CurrencyHistory extends Component {
     return (
       <Container>
         <Row>
-          <Col xs={12} style={{ textAlign: 'center' }}>
+          <Col xs={12} md={12} lg={12} style={{ textAlign: 'center' }}>
             <DatePicker
               minDate={minDate}
               maxDate={maxDate}
@@ -31,7 +31,7 @@ class CurrencyHistory extends Component {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col xs={12} md={12} lg={12}>
             <CurrencyChart data={data} visible={visible} onClick={e => onLabelClick(e.label)} />
           </Col>
         </Row>
