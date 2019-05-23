@@ -74,6 +74,38 @@ function fetchDayHistory(date) {
   });
 }
 
+function changeLoadSubStatus(load) {
+  return {
+    type: 'CHANGE_LOAD_SUBSCRIBE_STATUS',
+    load,
+  };
+}
+
+function changeSubStatus(status) {
+  return {
+    type: 'CHANGE_SUBSCRIBE_STATUS',
+    status,
+  };
+}
+
+export const getSubscribeStatus = token => (dispatch) => {
+  dispatch(changeLoadSubStatus(true));
+  return new CurrencyAPI().getUserSubscription(token).then((body) => {
+    dispatch(changeSubStatus(body.status));
+    return dispatch(changeLoadSubStatus(false));
+  });
+};
+
+export const subscribe = token => (dispatch) => {
+  dispatch(changeLoadSubStatus(true));
+  return new CurrencyAPI().subscribe(token).then(() => dispatch(getSubscribeStatus(token)));
+};
+
+export const unsubscribe = token => (dispatch) => {
+  dispatch(changeLoadSubStatus(true));
+  return new CurrencyAPI().unsubscribe(token).then(() => dispatch(getSubscribeStatus(token)));
+};
+
 export const selectDate = date => (dispatch) => {
   dispatch(changeDate(date));
   return dispatch(fetchDayHistory(date));

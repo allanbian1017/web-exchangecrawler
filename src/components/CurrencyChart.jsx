@@ -46,12 +46,17 @@ const CurrencyChart = ({ data, visible, onClick }) => (
         },
       ],
     }}
-    width={700}
-    height={500}
     options={{
-      maintainAspectRatio: false,
+      responsive: true,
+      aspectRatio: 1.4,
+      maintainAspectRatio: true,
     }}
     legend={{
+      labels: {
+        boxWidth: 60,
+        fontSize: 18,
+      },
+      position: 'bottom',
       onClick: (e, item) => onClick({ label: item.text }),
     }}
   />
