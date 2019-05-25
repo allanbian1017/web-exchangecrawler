@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import Analytics from 'react-router-ga';
 import configureStore from './store/configureStore';
 import { HoursContainer, DayContainer, SettingContainer } from './containers';
 
@@ -19,7 +20,9 @@ const App = () => (
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <Analytics id="UA-140458780-2">
+        <App />
+      </Analytics>
     </BrowserRouter>
   </Provider>,
   document.getElementById('app'),
