@@ -2,9 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import Analytics from 'react-router-ga';
+import TagManager from 'react-gtm-module';
 import configureStore from './store/configureStore';
 import { HoursContainer, DayContainer, SettingContainer } from './containers';
+
+const tagManagerArgs = {
+  gtmId: 'GTM-MGT88WX',
+};
+
+TagManager.initialize(tagManagerArgs);
 
 const store = configureStore();
 
@@ -20,9 +26,7 @@ const App = () => (
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Analytics id="UA-140458780-2">
-        <App />
-      </Analytics>
+      <App />
     </BrowserRouter>
   </Provider>,
   document.getElementById('app'),
